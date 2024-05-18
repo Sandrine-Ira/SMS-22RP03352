@@ -1,4 +1,4 @@
-/*
+   /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
@@ -22,7 +22,7 @@ public class Studentmanagementsystem  {
 private static final String USERNAME="root";
 private static final String PASSWORD="";
     public static void main(String args[]) {
-        // TODO code application logic here
+       
 
         JFrame frame1=new JFrame();
         frame1.setTitle("student management system");
@@ -114,7 +114,7 @@ private static final String PASSWORD="";
         panel1.add(scrollPane, gbc);
         btn1.addActionListener(new ActionListener(){
         public void actionPerformed(ActionEvent e){
-        //JOptionPane.showMessageDialog(null,txtname.getText());
+       
         try{
                   Connection conn=null;
                   Statement stmt=null;
@@ -128,7 +128,7 @@ private static final String PASSWORD="";
     PreparedStatement pstm=conn.prepareStatement(sql);
       String field1 = txtname.getText();
       String field2 = txtregno.getText();
-      int field3 = Integer.parseInt(txtmath.getText());
+      int field3 = Integer.parseInt(txtmath.getText());//converting string to integer
       int field4 = Integer.parseInt(txtjava.getText());
       int field5 = Integer.parseInt(txtphp.getText());
       if (field3 < 0 || field3 > 100 || field4 < 0 || field4 > 100 || field5 < 0 ||field5 > 100) {
@@ -141,7 +141,7 @@ txtjava.setText("");
 txtphp.setText("");     
       }
       else{
-pstm.setString(1, field1);
+pstm.setString(1, field1);//inseting into table
 pstm.setString(2,field2);
 pstm.setInt(3,field3);
 pstm.setInt(4,field4);
@@ -149,7 +149,7 @@ pstm.setInt(5,field5);
       
 pstm.executeUpdate();
       }
- txtname.setText("");
+ txtname.setText("");//after inserting keep textfield empty
 txtregno.setText("");
 txtmath.setText("");
 txtjava.setText("");
