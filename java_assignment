@@ -1,201 +1,315 @@
-   /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package studentmanagementsystem;
 
-import java.awt.*;
-import javax.swing.*;
-import java.awt.ActiveEvent;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Scanner;
-import java.sql.*;
-import javax.swing.table.DefaultTableModel;
-
-
+/**
+ *
+ * @author Sandrine Irah
  
-public class Studentmanagementsystem  {
+ */
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.sql.*;
+public class StudentMananagementsystem extends javax.swing.JFrame {
 
- private static final String JDBC_URL="jdbc:mariadb://localhost:3306/theclass";
-private static final String USERNAME="root";
-private static final String PASSWORD="";
-    public static void main(String args[]) {
-       
+    /**
+     * Creates new form StudentMananagementsystem
+     */
+    public StudentMananagementsystem() {
+        initComponents();
+    }
 
-        JFrame frame1=new JFrame();
-        frame1.setTitle("student management system");
-        frame1.setSize(300,300);
-        frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JPanel panel1=new JPanel();
-        panel1.setLayout(new GridBagLayout());
-        GridBagConstraints gbc= new GridBagConstraints();
-        //panel1.setBackground(Color);
-        frame1.add(panel1);
-        JLabel label1=new JLabel("Name:");
-        //label1.setFont(new Font("arial",Font.BOLD,24));
-        JLabel label2=new JLabel("Reg number:");
-        JTextField txtname=new JTextField(20);
-        JLabel label3=new JLabel("Math marks:");
-         JTextField txtmath=new JTextField(20);
-        JLabel label4=new JLabel("java marks:");
-         JTextField txtjava=new JTextField(20);
-        JLabel label5=new JLabel("php marks:");
-        JTextField txtphp=new JTextField(20);
-        JButton btn1=new JButton("add student");
-        btn1.setBackground(Color.GREEN);
-   
-       JButton btn2=new JButton("exit");
-        btn2.setBackground(Color.RED);
-        //txtname.setBounds(250,100,100,100);
-        txtname.setEditable(true);
-         JTextField txtregno=new JTextField(20);
-          txtname.setEditable(true);
-          gbc.insets=new Insets (5,5,5,5);
-           gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0; 
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.EAST;
-        panel1.add(label1,gbc);
-         gbc.gridx = 1; 
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.WEST;
-        panel1.add(txtname,gbc);
-         gbc.gridx = 0; 
-        gbc.gridy = 1;
-        gbc.anchor = GridBagConstraints.EAST;
-         panel1.add(label2,gbc);
-         gbc.gridx = 1; 
-        gbc.gridy = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-         panel1.add(txtregno,gbc);
-         gbc.gridx = 0; 
-        gbc.gridy = 2;
-        gbc.anchor = GridBagConstraints.EAST;
-         panel1.add(label3,gbc);
-         gbc.gridx = 1; 
-        gbc.gridy = 2;
-        gbc.anchor = GridBagConstraints.WEST;
-         panel1.add(txtmath,gbc);
-         gbc.gridx = 0; 
-        gbc.gridy = 3;
-        gbc.anchor = GridBagConstraints.EAST;
-         panel1.add(label4,gbc);
-         gbc.gridx = 1; 
-        gbc.gridy = 3;
-        gbc.anchor = GridBagConstraints.WEST;
-         panel1.add(txtjava,gbc);
-         gbc.gridx = 0; 
-        gbc.gridy = 4;
-        gbc.anchor = GridBagConstraints.EAST;
-         panel1.add(label5,gbc);
-         gbc.gridx = 1; 
-        gbc.gridy = 4;
-        gbc.anchor = GridBagConstraints.WEST;
-         panel1.add(txtphp,gbc);
-          gbc.gridx = 0; 
-        gbc.gridy = 5;
-        gbc.anchor = GridBagConstraints.EAST;
-         panel1.add(btn1,gbc);
-         gbc.gridx = 1; 
-        gbc.gridy = 5;
-        gbc.anchor = GridBagConstraints.WEST;
-         panel1.add(btn2,gbc);
-          DefaultTableModel tableModel = new DefaultTableModel();
-        JTable table = new JTable(tableModel);
-        String[] columnNames = {"Name", "Reg Number", "Average marks"};
-        tableModel.setColumnIdentifiers(columnNames);
-        JScrollPane scrollPane = new JScrollPane(table);
-        gbc.gridx = 0;
-        gbc.gridy = 6;
-        gbc.gridwidth = 2;
-        //gbc.fill = GridBagConstraints.BOTH;
-        panel1.add(scrollPane, gbc);
-        btn1.addActionListener(new ActionListener(){
-        public void actionPerformed(ActionEvent e){
-       
-        try{
-                  Connection conn=null;
-                  Statement stmt=null;
-           Class.forName("org.mariadb.jdbc.Driver");
-    conn = DriverManager.getConnection(JDBC_URL,USERNAME,PASSWORD);
-    stmt=conn.createStatement();
-    String sql="CREATE TABLE IF NOT EXISTS STUDENTSMGMNT(name varchar(10),regno varchar(20),math int,java int,php int)";
-    stmt.executeUpdate(sql);  
-    
-    sql="INSERT INTO STUDENTSMGMNT(name,regno,math,java,php)VALUES(?,?,?,?,?)"; 
-    PreparedStatement pstm=conn.prepareStatement(sql);
-      String field1 = txtname.getText();
-      String field2 = txtregno.getText();
-      int field3 = Integer.parseInt(txtmath.getText());//converting string to integer
-      int field4 = Integer.parseInt(txtjava.getText());
-      int field5 = Integer.parseInt(txtphp.getText());
-      if (field3 < 0 || field3 > 100 || field4 < 0 || field4 > 100 || field5 < 0 ||field5 > 100) {
-     JOptionPane.showMessageDialog(null, "Marks should be between 0 and 100", "Error", JOptionPane.ERROR_MESSAGE);
-     JOptionPane.showMessageDialog(null,"please enter the valid numeric value of marks");
-        txtname.setText("");
-txtregno.setText("");
-txtmath.setText("");
-txtjava.setText("");
-txtphp.setText("");     
-      }
-      else{
-pstm.setString(1, field1);//inseting into table
-pstm.setString(2,field2);
-pstm.setInt(3,field3);
-pstm.setInt(4,field4);
-pstm.setInt(5,field5);
-      
-pstm.executeUpdate();
-      }
- txtname.setText("");//after inserting keep textfield empty
-txtregno.setText("");
-txtmath.setText("");
-txtjava.setText("");
-txtphp.setText("");
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    private void initComponents() {
 
-ResultSet rs = stmt.executeQuery("SELECT * FROM STUDENTSMGMNT");
-tableModel.setRowCount(0);//clear
-                    while (rs.next()) {
-                        String name = rs.getString("name");
-                        String regno = rs.getString("regno");
-                        int math = rs.getInt("math");
-                        int java=rs.getInt("java");
-                        
-                        int php=rs.getInt("php");
-                        int avg=(math+java+php)/3;
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        txtname = new javax.swing.JTextField();
+        txtregno = new javax.swing.JTextField();
+        txtmath = new javax.swing.JTextField();
+        txtjava = new javax.swing.JTextField();
+        txtphp = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        table1 = new javax.swing.JTable();
 
-                        // Add row to table model
-                        tableModel.addRow(new Object[]{name, regno,avg});
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Student Mangement System");
 
-        }}
-        
-        catch(SQLException d){
-           d.printStackTrace();
-        }
-        catch(Exception d){
-           d.printStackTrace();
-        }
-    }});
-       
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel1.setText("Name");
 
- btn2.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel2.setText("Reg number");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel3.setText("math marks");
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel4.setText("java marks");
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel5.setText("php marks");
+
+        txtphp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtphpActionPerformed(evt);
             }
         });
 
+        jButton1.setBackground(new java.awt.Color(51, 255, 51));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("Add Student");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
+        jButton2.setBackground(new java.awt.Color(255, 0, 0));
+        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setText("Exit");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
+        table1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
+            },
+            new String [] {
+                "Name", "Reg Number", "Average"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+            };
 
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(table1);
 
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtjava, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
+                        .addGap(28, 28, 28)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtmath, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
+                                .addComponent(txtphp))
+                            .addComponent(txtregno, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtname, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(37, 37, 37))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel2))
+                    .addComponent(txtregno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel5))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(txtmath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtjava, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtphp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(37, Short.MAX_VALUE))
+        );
 
+        pack();
+    }// </editor-fold>                        
 
-        frame1.setVisible(true);
-    
-        
-    }
+    private void txtphpActionPerformed(java.awt.event.ActionEvent evt) {                                       
+        // TODO add your handling code here:
+    }                                      
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        // TODO add your handling code here:
+        System.exit(0);
+    }                                        
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+
+        String field1=txtname.getText();
+       String field2=txtregno.getText();
+       
+        try{
+       
+       int field3=Integer.parseInt(txtmath.getText());
+       int field4=Integer.parseInt(txtjava.getText());
+       int field5=Integer.parseInt(txtphp.getText());
+         if(field3<0 || field3>100 || field4<0 || field4>100 || field5>100 || field5<0) {
+             JOptionPane.showMessageDialog(null,"the marks shoul be between 0 and 100" );
+             txtname.setText("");
+             txtregno.setText("");
+             txtmath.setText("");
+             txtjava.setText("");
+             txtphp.setText("");
+         }
+             else{
+             DefaultTableModel tablemodel=(DefaultTableModel)table1.getModel();
+       //String [] data  ={field1,field2,field2};
+       //tablemodel.addRow(data);
+       
+      
+      
+       try{
+            Connection conn=null;
+       Statement stmnt=null;
+       String  url="jdbc:mariadb://localhost:3306/theclass";
+       String username="root";
+       String password=""; 
+       conn=DriverManager.getConnection(url,username,password);
+       stmnt=conn.createStatement();
+       
+             String sql="INSERT INTO system(name,regno,math,java,php)values(?,?,?,?,?)";
+     //stmnt.executeUpdate(sql);
+     PreparedStatement pstm=conn.prepareStatement(sql);
+     pstm.setString(1, field1);
+     pstm.setString(2, field2);
+     pstm.setInt(3, field3);
+     pstm.setInt(4, field4);
+     pstm.setInt(5, field5);
+     pstm.executeUpdate();
+     ResultSet rs=stmnt.executeQuery("SELECT*FROM SYSTEM");
+     tablemodel.setRowCount(0);
+     while(rs.next()){
+     String name=rs.getString("name");
+     String regno=rs.getString("regno");
+     int math=rs.getInt("math");
+     int java=rs.getInt("java");
+     int php=rs.getInt("php");
+     int avg=(math+java+php)/3;
+     //tablemodel.addRow(new object[]={na});
+     tablemodel.addRow(new Object[]{name, regno,avg});
+     }
+       }
+       
+       catch(Exception e){
+           JOptionPane.showMessageDialog(this,"error "+e );
+           
+       }
+
+     
+     
+       
+                     }
+         
+      
 }
+catch(Exception e){
+     JOptionPane.showMessageDialog(this,"Please enter vaid numerric values for marks " );
+}
+       
+
+    }                                        
+    
+    
+  
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(StudentMananagementsystem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(StudentMananagementsystem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(StudentMananagementsystem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(StudentMananagementsystem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new StudentMananagementsystem().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify                     
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable table1;
+    private javax.swing.JTextField txtjava;
+    private javax.swing.JTextField txtmath;
+    private javax.swing.JTextField txtname;
+    private javax.swing.JTextField txtphp;
+    private javax.swing.JTextField txtregno;
+    // End of variables declaration                   
+}
+
 
